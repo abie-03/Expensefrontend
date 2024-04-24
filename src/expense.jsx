@@ -19,17 +19,16 @@ export default function Expense() {
   useEffect(() => {
     let income = 0;
     let outgoing = 0;
-    expenses.forEach(
-      (expense) => {
-        if (expense.amount > 0) {
-          income = income + parseFloat(expense.amount);
-        } else {
-          outgoing = outgoing + parseFloat(expense.amount);
-        }
-      },
-      [expenses]
-    );
-  });
+    expenses.forEach((expense) => {
+      if (expense.amount > 0) {
+        income = income + parseFloat(expense.amount);
+      } else {
+        outgoing = outgoing + parseFloat(expense.amount);
+      }
+    });
+    setIncome(income);
+    setOutgoing(outgoing);
+  }, [expenses]);
   const deleteExpense = (id) => {
     console.log(expenses.filter((expense) => expense.id != id));
     setExpenses(expenses.filter((expense) => expense.id != id));
