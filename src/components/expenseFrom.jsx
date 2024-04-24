@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 const ExpenseForm = ({ addExpense }) => {
   const [title, setTitle] = useState(null);
   const [amount, setAmount] = useState(null);
@@ -6,6 +6,8 @@ const ExpenseForm = ({ addExpense }) => {
     event.preventDefault();
     console.log(title, amount);
     addExpense(title, amount);
+    // setAmount(0);
+    // setTitle("");
     console.log("submitted");
   };
   const handleTitleChange = (event) => {

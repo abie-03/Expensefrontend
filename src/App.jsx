@@ -1,13 +1,19 @@
-import { useState, Fragment, useEffect } from "react";
 import "./App.css";
-
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Expense from "./expense";
 
+const routes = createBrowserRouter([
+  {
+    path: "/expense",
+    Component: Expense,
+  },
+]);
 function App() {
   return (
     <>
       {/* <Album /> */}
-      <Expense />
+      {/* <Expense /> */}
+      <RouterProvider router={routes} />
     </>
   );
 }

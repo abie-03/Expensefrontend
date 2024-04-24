@@ -3,19 +3,28 @@ import ExpenseItem from "./components/expenseItem";
 import ExpenseForm from "./components/expenseFrom";
 export default function Expense() {
   const [expenses, setExpenses] = useState([
-    {
-      id: 1,
-      title: "Book",
-      amount: 100,
-    },
-    {
-      id: 2,
-      title: "Dress",
-      amount: 800,
-    },
+    // {
+    //   id: 1,
+    //   title: "Book",
+    //   amount: 100,
+    // },
+    // {
+    //   id: 2,
+    //   title: "Dress",
+    //   amount: 800,
+    // },
   ]);
   const [income, setIncome] = useState(0);
   const [outgoing, setOutgoing] = useState(0);
+  const getExpense = () => {
+    fetch("https://expensebackend-3.onrender.com/expense/all")
+      .then((res) => res.json())
+      .then((data) => setExpenses(data))
+      .catch((err) => console.log(err));
+  };
+  useEffect(() => {
+    getExpense();
+  }, []);
   useEffect(() => {
     let income = 0;
     let outgoing = 0;
@@ -30,8 +39,13 @@ export default function Expense() {
     setOutgoing(outgoing);
   }, [expenses]);
   const deleteExpense = (id) => {
-    console.log(expenses.filter((expense) => expense.id != id));
-    setExpenses(expenses.filter((expense) => expense.id != id));
+    // console.log(expenses.filter((expense) => expense.id != id));
+    // setExpenses(expenses.filter((expense) => expense.id != id));
+    fetch(`https://expensebackend-3.onrender.com/expense/delete/${id}`, {
+      method: "DELETE",
+    })
+      .then(() => getExpense())
+      .catch((err) => console.log(err));
   };
   // const addExpense = (title, amount) => {
   //   const newExpense = {
@@ -45,8 +59,8 @@ export default function Expense() {
   //   //setExpense(existing);
   // };
   const addExpense = (title, amount) => {
-    const item = { id: expenses.length + 1, title: title, amount: amount };
-    setExpenses([...expenses, item]);
+    // const item = { id: expenses.length + 1, title: title, amount: amount };
+    // setExpenses([...expenses, item]);
     fetch("https://expensebackend-3.onrender.com/expense/new", {
       method: "POST",
       headers: {
@@ -57,22 +71,26 @@ export default function Expense() {
         category: title,
         date: new Date(),
       }),
-    });
+    })
+      .then(() => {
+        getExpense();
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <>
       <div>
         <div>Expense Tracker</div>
-        <div className="balance">Balance: 0</div>
+        <div className="balance">Balance: {income + outgoing}</div>
         <div className="income-expense-container">
           <div className="income">
             <span className="title">Income</span>
-            <span>0</span>
+            <span>{income}</span>
           </div>
           <div className="block"></div>
           <div className="expense">
             <span className="title">Expense</span>
-            <span>0</span>
+            <span>{outgoing}</span>
           </div>
         </div>
         {/* form */}
@@ -83,10 +101,10 @@ export default function Expense() {
       {expenses.map((expense) => (
         <ExpenseItem
           key={expense.id}
-          title={expense.title}
+          title={expense.category}
           amount={expense.amount}
-          id={expense.id}
-          deleteExpense={() => deleteExpense(expense.id)}
+          id={expense._id}
+          deleteExpense={deleteExpense}
         />
       ))}
     </>
