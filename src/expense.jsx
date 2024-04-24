@@ -61,21 +61,25 @@ export default function Expense() {
   const addExpense = (title, amount) => {
     // const item = { id: expenses.length + 1, title: title, amount: amount };
     // setExpenses([...expenses, item]);
-    fetch("https://expensebackend-3.onrender.com/expense/new", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        amount,
-        category: title,
-        date: new Date(),
-      }),
-    })
-      .then(() => {
-        getExpense();
+    if (amount < income + outgoing) {
+      alert("Insufficent balance");
+    } else {
+      fetch("https://expensebackend-3.onrender.com/expense/new", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount,
+          category: title,
+          date: new Date(),
+        }),
       })
-      .catch((err) => console.log(err));
+        .then(() => {
+          getExpense();
+        })
+        .catch((err) => console.log(err));
+    }
   };
   return (
     <>
