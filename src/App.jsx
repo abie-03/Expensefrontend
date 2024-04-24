@@ -4,7 +4,7 @@ import Expense from "./expense";
 
 const routes = createBrowserRouter([
   {
-    path: "/expense",
+    path: "/",
     Component: Expense,
   },
 ]);
