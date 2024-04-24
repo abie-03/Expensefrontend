@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ExpenseItem from "./components/expenseItem";
 import ExpenseForm from "./components/expenseFrom";
+import Swal from "sweetalert2";
 export default function Expense() {
   const [expenses, setExpenses] = useState([
     // {
@@ -61,8 +62,16 @@ export default function Expense() {
   const addExpense = (title, amount) => {
     // const item = { id: expenses.length + 1, title: title, amount: amount };
     // setExpenses([...expenses, item]);
-    if (amount < income + outgoing) {
-      alert("Insufficent balance");
+    if (amount === null || title === null) {
+      Swal.fire({
+        title: "Fill both the fields",
+        icon: "warning",
+      });
+    } else if (amount == 0 || amount < income + outgoing) {
+      Swal.fire({
+        title: "Insufficient Balance",
+        icon: "warning",
+      });
     } else {
       fetch("https://expensebackend-3.onrender.com/expense/new", {
         method: "POST",
