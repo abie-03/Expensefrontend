@@ -67,7 +67,7 @@ export default function Expense() {
         title: "Fill both the fields",
         icon: "warning",
       });
-    } else if (income + outgoing == 0 || income + outgoing < amount * -1) {
+    } else if (income + outgoing < amount * -1) {
       Swal.fire({
         title: "Insufficient Balance",
         icon: "warning",
